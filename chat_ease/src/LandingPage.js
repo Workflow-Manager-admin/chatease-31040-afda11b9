@@ -1,483 +1,341 @@
 import React from "react";
 
-// PUBLIC_INTERFACE
+/**
+ * PUBLIC_INTERFACE
+ * LandingPage - Modern, adaptive React landing for ChatEase
+ */
 function LandingPage() {
-  /**
-   * TalkBuddy landing page:
-   * - Hero (big title, catchphrase, description, animated bot, Start Chatting with smooth scroll)
-   * - Features (cards with highlight icons)
-   * - How It Works (3-step, illustrated format)
-   * - Try It Now (glowing/animated button with smooth scroll)
-   * - Footer (About, Credits, OpenAI, feedback/contact links)
-   * - Support both light/dark gradients, fonts, strong visual polish/animation
-   */
-
-  // Smooth scroll to a target section by ID
+  // Scroll to a target section smoothly by ID
   const scrollToSection = (id) => (e) => {
     e.preventDefault();
     const target = document.getElementById(id);
     if (target)
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
-  // Animated glowing gradient for CTA button & section backgrounds
-  const extraStyles = `
-    :root {
-      --tb-primary: #4F8CFF;
-      --tb-primary-light: #E3F2FF;
-      --tb-gradient-dark: linear-gradient(111deg, #192857 0%, #4F8CFF 80%);
-      --tb-gradient-light: linear-gradient(107deg, #E3F2FF 0%, #C4F5FF 100%);
-      --tb-cta-glow: #4F8CFF49;
-      --tb-btn-glow: #afd3ff64;
-    }
-    .talkbuddy-section-hero {
-      background: var(--tb-gradient-dark);
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-      min-height: 420px;
-    }
-    body.talkbuddy-light .talkbuddy-section-hero {
-      background: var(--tb-gradient-light);
-      color: #1A2133;
-    }
-
-    .tb-hero-bot {
-      margin: 0 auto 0.5em auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .tb-bot-svg {
-      animation: tb-bot-float 3.7s ease-in-out infinite alternate;
-      max-width: 164px;
-      filter: drop-shadow(0 8px 52px #4F8CFF2a);
-    }
-    @keyframes tb-bot-float {
-      0% { transform: translateY(6px) }
-      47% { transform: translateY(-16px)}
-      70% { transform: translateY(-14px);}
-      100% { transform: translateY(9px)}
-    }
-
-    .talkbuddy-section-features {
-      background: linear-gradient(105deg, #213377 0%, #222B45 90%);
-      color: #fff;
-      z-index: 1;
-    }
-    body.talkbuddy-light .talkbuddy-section-features {
-      background: linear-gradient(110deg, #f0f8ff 0%, #ECF5FF 80%, #d2e7ff 100%);
-      color: #182132;
-    }
-    .tb-features-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2em;
-      justify-content: center;
-      margin: 1em auto 0 auto;
-      width: 100%;
-      max-width: 1050px;
-    }
-    .tb-feature-card {
-      background: rgba(255,255,255,0.09);
-      border-radius: 16px;
-      padding: 30px 20px 22px 22px;
-      min-width: 228px;
-      min-height: 132px;
-      box-shadow: 0 4px 24px #4F8CFF18;
-      border: 1.5px solid #4F8CFF21;
-      display: flex; flex-direction: column; align-items: flex-start;
-      transition: border 0.18s, box-shadow 0.22s;
-      text-align: left;
-      position: relative;
-      z-index: 1;
-    }
-    .tb-feature-card:hover {
-      border: 2.4px solid #4F8CFFEE;
-      box-shadow: 0 10px 30px #4F8CFF25, 0 4px 12px #222B4550;
-      z-index: 2;
-    }
-    .tb-feature-ico {
-      font-size: 2.2em;
-      margin-bottom: 8px;
-      text-shadow: 0 2px 13px #4F8CFF20;
-    }
-    .tb-feature-title {
-      font-size: 1.17em;
-      font-weight: 700;
-      margin-bottom: 4px;
-      letter-spacing: -0.5px;
-    }
-    .tb-feature-desc {
-      font-size: 1.03em;
-      opacity: 0.91;
-      color: inherit;
-      font-weight: 400;
-    }
-
-    .talkbuddy-section-how {
-      background: transparent; margin: 0 auto;
-      color: inherit;
-    }
-    .tb-how-steps-list {
-      max-width: 680px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 1.4em;
-      justify-content: space-between;
-    }
-    .tb-how-step {
-      background: rgba(255,255,255,0.12);
-      border-radius: 14px;
-      min-width: 183px;
-      flex: 1 1 32%;
-      margin: 0.5em 0.25em;
-      padding: 22px 18px;
-      display: flex;
-      align-items: flex-start;
-      box-shadow: 0 2.5px 17px #4F8CFF0e;
-      border: 1px solid #4F8CFF12;
-      gap: 14.5px;
-      min-height: 108px;
-    }
-    .tb-how-step-icon {
-      font-size: 2em;
-      margin-right: 7px;
-      flex-shrink: 0;
-      opacity: 0.82;
-      margin-top: 2px;
-    }
-    .tb-how-step-main {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .tb-how-step-title {
-      font-weight: 600;
-      font-size: 1.07em;
-      margin-bottom: 3px;
-    }
-    .tb-how-step-desc {
-      font-size: 0.98em;
-      color: var(--text-secondary);
-    }
-    .tb-try-section {
-      background: linear-gradient(107deg, #4F8CFF 0%, #33E3FF 100%);
-      color: #fff;
-      text-align: center;
-      min-height: 190px;
-      padding: 60px 0 40px 0;
-      box-shadow: 0 4px 48px #4F8CFF35;
-      border-radius: 22px;
-      margin-top: 2em;
-      margin-bottom: 1.7em;
-      position: relative;
-      overflow: hidden;
-      z-index: 5;
-    }
-    body.talkbuddy-light .tb-try-section {
-      background: linear-gradient(109deg, #e4f2fe 0%, #c7e9ff 100%);
-      color: #183170;
-    }
-
-    .tb-try-btn {
-      margin: 38px auto 0 auto;
-      font-size: 1.28em;
-      font-weight: 700;
-      padding: 19px 55px;
-      border-radius: 42px;
-      background: linear-gradient(95deg, #2253ff 7%, #4F8CFF 80%);
-      color: #fff;
-      border: none;
-      box-shadow: 0 2px 24px #4F8CFF18, 0 1px 0 #2253ff33;
-      cursor: pointer;
-      animation: tb-trybtn-pulse 1.75s infinite ease-in-out;
-      outline: none;
-      letter-spacing: 0.03em;
-      transition: background 0.18s, box-shadow 0.18s;
-      will-change: box-shadow;
-      position: relative;
-      z-index: 7;
-    }
-
-    @keyframes tb-trybtn-pulse {
-      0% { box-shadow: 0 0 0px 0 var(--tb-btn-glow); }
-      68% { box-shadow: 0 0 18px 11px var(--tb-btn-glow);}
-      100% { box-shadow: 0 0 0px 0 var(--tb-btn-glow);}
-    }
-
-    .tb-try-btn:focus, .tb-try-btn:hover {
-      background: linear-gradient(90deg, #184dd7 7%, #35e2ff 97%);
-      box-shadow: 0 5px 38px #33e3ff33, 0 1.4px 0 #2253ff33;
-      outline: 2.3px dotted #4F8CFF82;
-    }
-
-    .tb-footer {
-      padding: 28px 0 18px 0;
-      color: #fff;
-      text-align: center;
-      font-size: 1.03em;
-      opacity: 0.87;
-      margin-top: 2.6em;
-      border-top: 1.5px solid #4f8cff27;
-      background: transparent;
-    }
-    body.talkbuddy-light .tb-footer {
-      background: #f8fbff;
-      color: #2a3751;
-      border-top: 1.5px solid #b7ddff5e;
-      opacity: 0.94;
-    }
-    .tb-footer-links {
-      font-size: 0.91em;
-      margin-bottom: 0.3em;
-      margin-top: 0.5em;
-    }
-    .tb-footer-link {
-      color: #4F8CFF;
-      text-decoration: none;
-      margin-right: 1em;
-      transition: color 0.18s;
-      font-weight: 500;
-    }
-    .tb-footer-link:hover,.tb-footer-link:focus {
-      color: #144199;
-      text-decoration: underline dashed;
-    }
-    .tb-footer-credits {
-      margin-top: 4px;
-      opacity: 0.74;
-      font-size: 0.95em;
-      color: inherit;
-    }
-    .tb-footer-openai {
-      color: #1096eb;
-      font-weight: 700;
-      font-size: 0.98em;
-      margin-left: 5px;
-    }
-    .tb-section-header {
-      font-size: 2.17em;
-      font-weight: 700;
-      margin: 0 0 1.1em 0;
-      letter-spacing: -0.5px;
-      color: #4F8CFF;
-      text-align: center;
-      line-height: 1.3;
-    }
-    body.talkbuddy-light .tb-section-header { color: #18429F; }
-
-    .tb-separator {
-      border: none;
-      border-top: 2px solid #4F8CFF18;
-      margin: 43px 0 34px 0;
-      width: 100%;
-    }
-
-    @media (max-width: 940px) {
-      .tb-features-row { gap: 1.2em; }
-      .tb-feature-card { min-width: 180px; padding: 17px; }
-    }
-    @media (max-width: 720px) {
-      .tb-section-header { font-size: 1.35em;}
-      .talkbuddy-section-hero, .talkbuddy-section-features, .talkbuddy-section-how, .tb-try-section { padding-left: 8px; padding-right: 8px; }
-      .tb-try-btn { font-size: 1.06em; padding: 13px 13vw;}
-      .tb-features-row { flex-direction: column;}
-      .tb-how-steps-list { flex-direction: column; gap: 0.3em; }
-    }
-    @media (max-width:470px) {
-      .tb-feature-card { min-width:120px; padding: 12px 5px;}
-      .tb-section-header { font-size: 0.97em;}
-      .tb-try-btn { font-size: 0.98em; padding: 8px 7vw;}
-      .tb-footer { font-size: 0.9em; }
-    }
-  `;
-
-  // Data for sections
+  // Feature card data
   const features = [
     {
-      icon: "💡",
-      title: "Human-like Chat",
-      desc: "Flows naturally – like texting a friend, not a bot.",
+      icon: "💬",
+      title: "Natural, Human-like Chat",
+      desc: "Converse with an AI that feels like texting a real friend. Experience fluid, intuitive interactions.",
     },
     {
       icon: "⚡",
-      title: "No Login Required",
-      desc: "Start instantly – no sign-ups or account creation.",
+      title: "Instant Start, No Login",
+      desc: "Jump into the conversation—no registration or sign-up needed. Privacy and ease by default.",
     },
     {
       icon: "🌗",
       title: "Light & Dark Mode",
-      desc: "Switch to your preferred look for eye comfort, day or night.",
+      desc: "Switch styles instantly for comfort, day or night. Adaptive gradients, fonts, and colors.",
     },
     {
       icon: "✨",
       title: "Brainstorm & Learn",
-      desc: "Spark ideas, get instant answers, and practice English fluency.",
-    },
-  ];
-  const steps = [
-    {
-      icon: "🚀",
-      title: "Open TalkBuddy",
-      desc: "Just load the web app — no install needed.",
-    },
-    {
-      icon: "💬",
-      title: "Start Chatting",
-      desc: "Type your message to start a conversation anytime.",
-    },
-    {
-      icon: "🤖",
-      title: "Get Instant Replies",
-      desc: "AI responds like a real friend, immediately.",
-    },
+      desc: "Generate ideas, boost your English, or get quick answers—your smart AI partner helps you grow.",
+    }
   ];
 
-  // Animated/SVG TalkBuddy bot illustration (placeholder, accessible)
-  function BotSVG() {
+  // Footer links
+  const footerLinks = [
+    { label: "About", href: "#about" },
+    { label: "Privacy", href: "#privacy" },
+    { label: "Contact", href: "mailto:feedback@chatease.app" }
+  ];
+
+  // Hero illustration - chat bubble with spark
+  function HeroIllo() {
     return (
       <svg
-        width="148"
-        height="148"
-        viewBox="0 0 148 148"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-label="Animated TalkBuddy Bot illustration"
-        className="tb-bot-svg"
+        viewBox="0 0 130 105"
+        width="180"
+        height="115"
+        aria-label="Chat bubble with spark"
+        style={{
+          filter: "drop-shadow(0 6px 40px #4F8CFF33)",
+          display: "block"
+        }}
       >
         <defs>
-          <radialGradient id="tb-bot-cir" cx="50%" cy="60%" r="100%">
-            <stop offset="0%" stopColor="#70E7F9" />
-            <stop offset="100%" stopColor="#58B3FF10" />
-          </radialGradient>
+          <linearGradient id="bg-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop stopColor="#4F8CFF" />
+            <stop offset="1" stopColor="#26d0ff" />
+          </linearGradient>
         </defs>
-        <circle cx="74" cy="74" r="58" fill="url(#tb-bot-cir)" />
-        <ellipse cx="74" cy="73" rx="38" ry="32" fill="#fff" opacity="0.91" />
-        <ellipse cx="74" cy="79" rx="28" ry="23" fill="#4F8CFF" opacity="0.47" />
-        <ellipse cx="74" cy="79" rx="19" ry="14" fill="#fff" opacity="0.67" />
-        <ellipse cx="57" cy="66" rx="6" ry="8.3" fill="#222" />
-        <ellipse cx="91" cy="66" rx="6" ry="8.3" fill="#222" />
-        <rect x="65" y="95" width="18" height="6.9" rx="3.2" fill="#222B45" />
-        <ellipse cx="86" cy="67.8" rx="1.7" ry="2.2" fill="#fff" opacity="0.7" />
-        <ellipse cx="63" cy="67.8" rx="1.7" ry="2.2" fill="#fff" opacity="0.7" />
+        <ellipse cx="65" cy="48" rx="58" ry="41"
+          fill="url(#bg-grad)"
+          opacity="0.89"
+        />
+        <ellipse
+          cx="65"
+          cy="54"
+          rx="47"
+          ry="32"
+          fill="#fff"
+          opacity="0.9"
+        />
+        {/* Chat tail */}
+        <path d="M40 78 Q45 95 62 88 Q54 83 62 75 L50 75 Q45 75 40 78"
+              fill="#fff" opacity="0.91" />
+        {/* Spark */}
+        <circle cx="105" cy="25" r="7" fill="#26d0ff" opacity="0.75" />
+        <circle cx="105" cy="25" r="4" fill="#fff" opacity="0.8" />
+        {/* Text dots */}
+        <circle cx="58" cy="64" r="4" fill="#B8D8FF" />
+        <circle cx="72" cy="65" r="4" fill="#4F8CFF" />
+        <circle cx="86" cy="64" r="4" fill="#B8D8FF" />
       </svg>
     );
   }
 
+  // Inline extra style for the LandingPage
+  const extraLandingCSS = `
+  .cease-bg-gradient {
+    min-height: 100vh;
+    width: 100vw;
+    background: linear-gradient(120deg, #172144 0%, #3058b9 60%, #00e8ff 100%);
+    transition: background 0.36s;
+  }
+  body.light .cease-bg-gradient {
+    background: linear-gradient(120deg, #f7fbff 3%, #ddebfa 60%, #85e6ff 100%);
+  }
+  .cease-content-main {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    width: 100vw;
+    padding-top: 94px;
+    box-sizing: border-box;
+    font-family: 'Inter','Segoe UI', 'Arial', sans-serif;
+    transition: color 0.34s;
+  }
+  .cease-hero {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    justify-content: center;
+    margin-bottom: 64px;
+    gap: 32px;
+  }
+  .cease-hero-headline {
+    font-size: 2.86rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    color: #fff;
+    text-shadow: 0 2px 18px #1a7fff23;
+    transition: color 0.3s;
+  }
+  body.light .cease-hero-headline {
+    color: #162743;
+    text-shadow: 0 2px 9px #71c8ffe2;
+  }
+  .cease-hero-sub {
+    color: #e0ebff;
+    font-size: 1.17rem;
+    margin-bottom: 9px;
+    transition: color 0.3s;
+    font-weight: 500;
+    line-height: 1.52; max-width: 650px; margin-left:auto; margin-right:auto;
+  }
+  body.light .cease-hero-sub {
+    color: #537eb2;
+  }
+  .cease-hero-btn {
+    font-size: 1.18rem;
+    font-weight: 700;
+    padding: 15px 46px;
+    border-radius: 32px;
+    background: linear-gradient(90deg,#2253ff 10%,#10deff 80%);
+    border: none;
+    color: #fff;
+    box-shadow: 0 4px 32px #16bfff22;
+    margin-top: 8px;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    outline: none;
+    transition: background .17s, box-shadow .23s, color .17s;
+  }
+  .cease-hero-btn:focus, .cease-hero-btn:hover {
+    background: linear-gradient(85deg, #0051e1 20%, #03bcff 90%);
+    color: #083a62;
+    box-shadow: 0 7px 41px #3cecff3a, 0 1.4px 0 #2253ff33;
+  }
+  .cease-hero-illo-wrap {
+    margin: 0 auto 0.5em;
+    animation: cease-float 4.1s ease-in-out infinite alternate;
+    will-change: transform, filter;
+    max-width: 196px;
+  }
+  @keyframes cease-float { 0% { transform:translateY(8px); } 43% {transform:translateY(-14px);} 70%{transform:translateY(-7px);} 100%{transform:translateY(13px);} }
+  .cease-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(215px,1fr));
+    gap: 2em;
+    margin: 0 auto;
+    padding: 43px 0 30px 0;
+    width: 100%;
+    max-width: 1020px;
+  }
+  .cease-feature-card {
+    background: rgba(255,255,255,0.10);
+    border-radius: 20px;
+    box-shadow: 0 4px 24px #4F8CFF15;
+    border: 2px solid #4F8CFF21;
+    padding: 34px 27px 24px 27px;
+    display: flex; flex-direction: column; align-items: center;
+    transition: border-color 0.21s, box-shadow 0.19s;
+    position: relative;
+    z-index: 1;
+    min-height: 176px;
+    font-size: 1.1rem;
+  }
+  .cease-feature-card:hover, .cease-feature-card:focus {
+    border-color: #00e0ff;
+    box-shadow: 0 9px 35px #009be52d,0 4px 18px #1cc7e648, 0 1px 0 #307fff22;
+    z-index: 2;
+  }
+  .cease-feature-ico {
+    font-size: 2.3em;
+    margin-bottom: 10px;
+    margin-top: -10px;
+    text-shadow: 0 2px 12px #10c8ff27;
+    user-select:none;
+  }
+  .cease-feature-title {
+    font-size: 1.13em;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #fff;
+    letter-spacing: -0.4px;
+    text-align:center;
+  }
+  body.light .cease-feature-title {
+    color: #2253ff;
+  }
+  .cease-feature-desc {
+    font-size: 1.05em;
+    color: #daeaf7;
+    opacity: 0.90;
+    text-align:center;
+  }
+  body.light .cease-feature-desc { color:#183a53; opacity: 0.90;}
+
+  .cease-footer {
+    padding: 28px 0 24px;
+    width: 100vw;
+    background: transparent;
+    text-align: center;
+    font-size: 1.06em;
+    border-top: 2px solid #31e0ff23;
+    margin-top: 58px;
+    color: #e0ebff;
+    transition: color 0.22s, background 0.3s, border-top 0.22s;
+  }
+  body.light .cease-footer {
+    background: #f6fbff;
+    border-top: 1.5px solid #b7ddff7e;
+    color: #2853b7;
+  }
+  .cease-footer-links {
+    margin-bottom: 0.17em;
+    font-size:0.97em;
+  }
+  .cease-footer-link {
+    color: #51d0ff;
+    text-decoration: none;
+    margin-right: 1.3em;
+    font-weight: 500;
+    transition: color 0.17s;
+  }
+  .cease-footer-link:hover, .cease-footer-link:focus {
+    text-decoration: underline dashed;
+    color:#1979c6;
+  }
+  .cease-footer-copyright { letter-spacing: 0.01em; opacity:0.78; }
+  @media (max-width: 900px) {
+    .cease-hero-headline { font-size: 2.1rem;}
+    .cease-content-main { padding-top: 74px;}
+    .cease-features-grid { gap:1.4em; }
+    .cease-feature-card { padding:21px 11px 16px;}
+  }
+  @media (max-width: 580px) {
+    .cease-content-main { padding-top: 68px;}
+    .cease-hero-headline { font-size: 1.54rem;}
+    .cease-hero-illo-wrap{ max-width: 94vw;}
+    .cease-features-grid { grid-template-columns:1fr; gap:0.7em;}
+    .cease-footer { font-size: 0.92em; }
+  }
+  `;
+
   return (
     <>
-      <style>{extraStyles}</style>
-      {/* HERO SECTION */}
-      <section className="talkbuddy-section-hero" id="hero" style={{padding: "90px 0 36px 0", minHeight: 390, display:"flex", alignItems:"center"}}>
-        <div className="container" style={{display:"flex",flexDirection:"column",alignItems:"center", position:"relative"}}>
-          <div className="subtitle" style={{
-            color: "#33e3ff", fontWeight:500, fontSize:"1.13rem",marginBottom:"1.17em"
-          }}>
-            AI Conversation Partner · Human-like · No Account Needed
-          </div>
-          <h1 className="title" style={{fontWeight:700,fontSize:"3em",lineHeight:1.1,maxWidth:680}}>
-            Meet <span style={{color:"#4F8CFF"}}>TalkBuddy</span>
-            <span style={{display:"block",fontWeight:500,fontSize:"0.62em",letterSpacing:"0.03em",color:"var(--text-secondary)",marginTop:"0.17em"}}>
-              Your always-available English conversation partner for practicing, brainstorming, and fun.
-            </span>
-          </h1>
-          <div className="description" style={{margin:"24px 0 34px 0",fontSize:"1.19em",color:"var(--text-secondary)",maxWidth:550}}>
-            Practice English, get quick answers, or simply chat with a friendly AI—instantly, comfortably, and without any sign-up.
-          </div>
-          <div className="tb-hero-bot" style={{margin:"21px 0 13px", flexDirection:"column",alignItems:"center"}}>
-            <BotSVG />
-            <div style={{fontSize: "1em", color:"var(--text-secondary)",marginTop:"7.8px"}}>
-              <em>Animated TalkBuddy Bot &mdash; always ready to chat</em>
+      <style>{extraLandingCSS}</style>
+      {/* Background and Layout Wrapper */}
+      <div className="cease-bg-gradient">
+        <main className="cease-content-main">
+          {/* HERO section */}
+          <section className="cease-hero" id="hero">
+            <div className="cease-hero-illo-wrap" aria-hidden="true">
+              <HeroIllo />
             </div>
-          </div>
-          <button
-            className="tb-try-btn"
-            tabIndex={0}
-            aria-label="Scroll to chat section"
-            onClick={scrollToSection("chat")}
-            style={{marginTop: 10}}
-          >
-            <span role="img" aria-label="chat">💬</span> Start Chatting <span role="img" aria-label="arrow">↓</span>
-          </button>
-        </div>
-      </section>
-      {/* FEATURES SECTION */}
-      <section className="talkbuddy-section-features" id="features" style={{padding: "62px 0 38px 0"}}>
-        <div className="container" style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-          <div className="tb-section-header">Why TalkBuddy?</div>
-          <div className="tb-features-row">
-            {features.map((f, idx) => (
-              <div className="tb-feature-card" key={f.title}
-                tabIndex={0} aria-label={f.title + " feature"}
-              >
-                <div className="tb-feature-ico" aria-hidden="true">{f.icon}</div>
-                <div className="tb-feature-title">{f.title}</div>
-                <div className="tb-feature-desc">{f.desc}</div>
+            <h1 className="cease-hero-headline">
+              Meet <span style={{ color: "#4F8CFF", filter: "brightness(1.25)" }}>ChatEase</span>
+              <div style={{
+                fontSize: "0.53em",
+                fontWeight: 500,
+                color: "var(--text-secondary, #b8eaff)",
+                marginTop: "0.31em",
+                letterSpacing: "0.02em"
+              }}>
+                Your always-available English conversation partner<br />for practicing, brainstorming, and fun.
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* HOW IT WORKS SECTION */}
-      <section className="talkbuddy-section-how" id="how" style={{padding:"37px 0 0 0"}}>
-        <div className="container">
-          <div className="tb-section-header" style={{marginBottom:14}}>
-            How It Works
-          </div>
-          <div className="tb-how-steps-list">
-            {steps.map((step, idx) => (
-              <div className="tb-how-step" key={step.title}>
-                <span className="tb-how-step-icon" aria-hidden="true">{step.icon}</span>
-                <div className="tb-how-step-main">
-                  <div className="tb-how-step-title">{step.title}</div>
-                  <div className="tb-how-step-desc">{step.desc}</div>
+            </h1>
+            <div className="cease-hero-sub">
+              Practice English, get quick answers, or simply chat with a friendly AI—instantly, comfortably, and without any sign-up.
+            </div>
+            <button className="cease-hero-btn"
+              aria-label="Scroll to chat section"
+              onClick={scrollToSection("chat")}
+            >
+              <span role="img" aria-label="chat">💬</span> Start Chatting
+            </button>
+          </section>
+          {/* FEATURES GRID */}
+          <section className="cease-features" id="features" aria-label="Features">
+            <div className="cease-features-grid" role="list">
+              {features.map((f, idx) => (
+                <div
+                  key={f.title}
+                  className="cease-feature-card"
+                  tabIndex={0}
+                  aria-label={f.title + " feature"}
+                  role="listitem"
+                >
+                  <div className="cease-feature-ico" aria-hidden="true">{f.icon}</div>
+                  <div className="cease-feature-title">{f.title}</div>
+                  <div className="cease-feature-desc">{f.desc}</div>
                 </div>
-              </div>
+              ))}
+            </div>
+          </section>
+        </main>
+        {/* FOOTER */}
+        <footer className="cease-footer">
+          <div className="cease-footer-links">
+            {footerLinks.map((l, i) => (
+              <a
+                key={l.label}
+                href={l.href}
+                className="cease-footer-link"
+                onClick={l.href.startsWith("#") ? scrollToSection(l.href.substring(1)) : undefined}
+              >{l.label}</a>
             ))}
           </div>
-        </div>
-      </section>
-
-      <hr className="tb-separator" />
-
-      {/* TRY IT NOW SECTION */}
-      <section className="tb-try-section" id="try-now">
-        <div className="container">
-          <div style={{
-            fontSize: "2em",
-            fontWeight: 600,
-            marginBottom: 13,
-            letterSpacing: "-1px"
-          }}>
-            Ready to chat with your AI buddy?
+          <div className="cease-footer-copyright">
+            &copy; {new Date().getFullYear()} <strong>ChatEase</strong> by Kavia &middot; Powered by OpenAI
           </div>
-          <button
-            className="tb-try-btn"
-            tabIndex={0}
-            aria-label="Go to chat area now"
-            onClick={scrollToSection("chat")}
-          >
-            <span role="img" aria-label="Chat">💬</span> Talk to AI Now <span role="img" aria-label="Arrow">→</span>
-          </button>
-        </div>
-      </section>
-      {/* FOOTER SECTION */}
-      <footer className="tb-footer">
-        <div className="tb-footer-links">
-          <a href="#hero" className="tb-footer-link" onClick={scrollToSection("hero")}>Home</a>
-          <a href="#features" className="tb-footer-link" onClick={scrollToSection("features")}>Features</a>
-          <a href="#how" className="tb-footer-link" onClick={scrollToSection("how")}>How It Works</a>
-          <a href="#try-now" className="tb-footer-link" onClick={scrollToSection("try-now")}>Try Now</a>
-          <a href="mailto:feedback@talkbuddy.ai" className="tb-footer-link">Feedback / Contact</a>
-        </div>
-        <div className="tb-footer-credits">
-          &copy; {new Date().getFullYear()} <strong>TalkBuddy</strong> by Kavia &middot; Inspired by OpenAI GPT models
-          <span className="tb-footer-openai">Powered by OpenAI</span>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </>
   );
 }
