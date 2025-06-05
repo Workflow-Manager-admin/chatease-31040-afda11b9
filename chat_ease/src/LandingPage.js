@@ -221,15 +221,16 @@ function LandingPage() {
   body.light .cease-feature-desc { color:#183a53; opacity: 0.90;}
 
   .cease-footer {
-    padding: 28px 0 24px;
+    padding: 10px 0 6px;
     width: 100vw;
     background: transparent;
     text-align: center;
     font-size: 1.06em;
     border-top: 2px solid #31e0ff23;
-    margin-top: 58px;
+    margin-top: auto;
     color: #e0ebff;
     transition: color 0.22s, background 0.3s, border-top 0.22s;
+    flex-shrink: 0;
   }
   body.light .cease-footer {
     background: #f6fbff;
@@ -237,7 +238,7 @@ function LandingPage() {
     color: #2853b7;
   }
   .cease-footer-links {
-    margin-bottom: 0.17em;
+    margin-bottom: 0.11em;
     font-size:0.97em;
   }
   .cease-footer-link {
@@ -247,11 +248,28 @@ function LandingPage() {
     font-weight: 500;
     transition: color 0.17s;
   }
+  .cease-footer-link:last-child {
+    margin-right: 0;
+  }
   .cease-footer-link:hover, .cease-footer-link:focus {
     text-decoration: underline dashed;
     color:#1979c6;
   }
-  .cease-footer-copyright { letter-spacing: 0.01em; opacity:0.78; }
+  .cease-footer-copyright {
+    letter-spacing: 0.01em;
+    opacity: 0.85;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  /* Make footer always stick to bottom using flex model on background wrapper */
+  .cease-bg-gradient {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .cease-content-main {
+    flex: 1 0 auto;
+  }
   @media (max-width: 900px) {
     .cease-hero-headline { font-size: 2.1rem;}
     .cease-content-main { padding-top: 74px;}
