@@ -1,9 +1,44 @@
 :root {
-  --base-light: #00ffff;
-  --base-dark: #00008b;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
+  --base-dark: #192848;
+  --base-light: #f3faff;
+  --brand-primary: #4F8CFF;
+  --brand-accent: #26d0ff;
+  --text-color: #fff;
+  --text-secondary: rgba(255,255,255,0.81);
+  --border-color: rgba(255,255,255,0.16);
+  --font-main: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica', Arial, sans-serif;
+  --font-weight-main: 500;
+  --transition: 0.27s cubic-bezier(.4,0,.2,1);
+}
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  background: linear-gradient(120deg, #16203e 6%, #264a93 80%, #18e0ff 100%);
+  color: var(--text-color);
+  transition: background 0.37s, color 0.26s;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body.light {
+  --text-color: #153b5c;
+  --text-secondary: #276097c2;
+  background: linear-gradient(120deg, #f7fbff 2%, #ddebfa 50%, #b1f1ff 100%);
+  color: var(--text-color);
+  transition: background 0.36s, color 0.28s;
+}
+body.dark {
+  --text-color: #fff;
+  --text-secondary: #cdefff;
+  background: linear-gradient(120deg, #10203b 10%, #152c56 80%, #0bbfff 100%);
+  color: var(--text-color);
+  transition: background 0.34s, color 0.26s;
+}
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  font-family: var(--font-main);
 }
 
 body {
