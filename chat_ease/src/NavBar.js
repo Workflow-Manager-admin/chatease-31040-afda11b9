@@ -51,13 +51,6 @@ function NavBar() {
           </div>
           <div className="talkbuddy-nav-links">
             <a
-              href="#home"
-              className="talkbuddy-link"
-              onClick={handleNav("home")}
-            >
-              Home
-            </a>
-            <a
               href="#chat"
               className="talkbuddy-link"
               onClick={handleNav("chat")}
