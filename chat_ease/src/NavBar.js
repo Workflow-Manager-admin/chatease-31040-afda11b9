@@ -1,223 +1,188 @@
 import React, { useState, useEffect } from "react";
 
-// PUBLIC_INTERFACE
+/**
+ * PUBLIC_INTERFACE
+ * NavBar for ChatEase - modern, fixed, adaptive styling, theme toggle, smooth transitions.
+ */
 function NavBar() {
-  /**
-   * NavBar component for TalkBuddy/TalkEase.
-   * - Left: App logo/name ("💬 TalkBuddy")
-   * - Center/Right: Navigation links
-   * - Far right: Light/Dark mode toggle
-   * - Responsive, fixed at top, color & shadow per mode, beautiful transitions
-   */
-  const [darkMode, setDarkMode] = useState(() => {
-    // Try to load mode from localStorage, else prefer dark by default
-    const stored = window.localStorage.getItem("talkbuddy-theme");
-    if (stored) return stored === "dark";
-    return window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
+  // Store theme as "light" or "dark" instead of boolean
+  const [theme, setTheme] = useState(() => {
+    const stored = window.localStorage.getItem("chatease-theme");
+    if (stored === "light" || stored === "dark") return stored;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark" : "light";
   });
 
-  // Apply theme to document.body
+  // Actual theme mode: update body class reactively for CSS, and vars for inner section styling
   useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("talkbuddy-dark");
-      document.body.classList.remove("talkbuddy-light");
+    if (theme === "dark") {
+      document.body.classList.add("dark");
+      document.body.classList.remove("light");
     } else {
-      document.body.classList.add("talkbuddy-light");
-      document.body.classList.remove("talkbuddy-dark");
+      document.body.classList.add("light");
+      document.body.classList.remove("dark");
     }
-    window.localStorage.setItem("talkbuddy-theme", darkMode ? "dark" : "light");
-  }, [darkMode]);
+    window.localStorage.setItem("chatease-theme", theme);
+  }, [theme]);
 
-  // Navigation stub: scroll to top (can be replaced with router)
-  const handleNav = (to) => (e) => {
+  // Smooth scroll handler for nav links
+  const smoothTo = (id) => (e) => {
     e.preventDefault();
-    // Stub: simulate navigation
-    if (to === "home") window.scrollTo({ top: 0, behavior: "smooth" });
-    // Could be extended for more navigation.
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   return (
     <>
-      <nav className="talkbuddy-navbar" style={navBarStyle(darkMode)}>
-        <div className="talkbuddy-navbar-inner">
-          <div className="talkbuddy-nav-left">
-            <span className="talkbuddy-logo-symbol" aria-label="TalkBuddy Logo" role="img">
-              💬
-            </span>
-            <span className="talkbuddy-logo-text">
-              TalkBuddy
-            </span>
-          </div>
-          <div className="talkbuddy-nav-links">
+      <nav className="cease-navbar" style={navBarStyle(theme)}>
+        <div className="cease-navbar-inner">
+          <span className="cease-logo" tabIndex={0}>
+            <span className="cease-logo-ico" role="img" aria-label="ChatEase logo">💬</span>
+            <span className="cease-logo-txt">ChatEase</span>
+          </span>
+          <div className="cease-nav-links">
             <a
               href="#chat"
-              className="talkbuddy-link"
-              onClick={handleNav("chat")}
-            >
-              Chat
-            </a>
+              className="cease-nav-link"
+              onClick={smoothTo("chat")}
+            >Chat</a>
             <a
               href="#about"
-              className="talkbuddy-link"
-              onClick={handleNav("about")}
-            >
-              About
-            </a>
+              className="cease-nav-link"
+              onClick={smoothTo("hero")}
+            >About</a>
           </div>
           <button
-            className="talkbuddy-toggler"
-            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-            onClick={() => setDarkMode((d) => !d)}
-            title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            className="cease-theme-toggle"
+            aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             tabIndex={0}
             type="button"
           >
-            <span className="tb-theme-ico" role="img" aria-label={darkMode ? "Light mode (show sun)" : "Dark mode (show moon)"}>
-              {darkMode ? "🌙" : "☀️"}
+            <span
+              className="cease-theme-ico"
+              role="img"
+              aria-label={theme === "dark" ? "Dark mode (show moon)" : "Light mode (show sun)"}
+            >
+              {theme === "dark" ? "🌙" : "☀️"}
             </span>
           </button>
         </div>
       </nav>
-      {/* Scoped styles */}
-      <style>
-        {navBarCSS}
-      </style>
+      <style>{ceaseNavBarCSS}</style>
     </>
   );
 }
 
-// --- Styles Logic ---
-
-// Get current colors and shadows depending on theme mode
-function navBarStyle(darkMode) {
+// NavBar styles for light/dark
+function navBarStyle(theme) {
   return {
-    background: darkMode
-      ? "linear-gradient(90deg, #000, #1A1A1A 50%, #333 100%)"
-      : "rgb(208, 204, 199)",
-    color: darkMode ? "#fff" : "#181622",
-    boxShadow: darkMode
-      ? "0 2px 22px 0 #0a0e20b0, 0 1.5px 0 #19162b"
-      : "0 2px 10px 0 #b9b2a333",
-    borderBottom: darkMode ? "1.5px solid #222" : "1.5px solid #e6e6e6",
+    background: theme === "dark"
+      ? "linear-gradient(91deg, #090f24 0%, #202f50 90%)"
+      : "linear-gradient(90deg, #f8fbff 30%, #d6e5fa 100%)",
+    color: theme === "dark" ? "#fff" : "#194474",
+    borderBottom: theme === "dark" ? "1.5px solid #193a55" : "1.5px solid #c7e7ff",
+    boxShadow: theme === "dark"
+      ? "0 2px 22px 0 #12345922, 0 1.5px 0 #0a223b"
+      : "0 2px 7px 0 #9fcef9b1",
     position: "fixed",
     top: 0,
     left: 0,
     width: "100vw",
-    zIndex: 99,
-    transition: "background 0.27s, color 0.22s, box-shadow 0.22s"
+    minHeight: "61px",
+    zIndex: 101,
+    transition: "background 0.3s, color 0.19s, box-shadow 0.19s, border-bottom 0.19s"
   };
 }
 
-// CSS as a template string (uses BEM-like classes to avoid conflicts)
-const navBarCSS = `
-.talkbuddy-navbar { min-height: 58px; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
-.talkbuddy-navbar-inner {
-  width: 100%;
-  margin: 0 auto;
-  max-width: 1122px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1.4rem;
+// New NavBar CSS, BEM-style class names for isolation
+const ceaseNavBarCSS = `
+.cease-navbar {
+  font-family: 'Inter','Segoe UI',Arial,sans-serif;
+  min-height:61px;
+  padding:0;
+  width:100vw;
 }
-.talkbuddy-nav-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: -0.5px;
-  user-select: none;
+.cease-navbar-inner {
+  width:100%;
+  max-width:1190px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 1.5em;
 }
-.talkbuddy-logo-symbol { font-size: 1.6em; filter: drop-shadow(0 2px 2px #44a6ee10); }
-.talkbuddy-logo-text {
-  font-size: 1.23em;
-  font-weight: 800;
-  letter-spacing: -0.7px;
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+.cease-logo {
+  display:flex;align-items:center;gap:10px;
+  font-size:1.43em;
+  font-weight:800;
+  letter-spacing:-0.6px;
+  color:#4F8CFF;
+  user-select:none;
 }
-.talkbuddy-nav-links {
-  display: flex;
-  align-items: center;
-  gap: 2.2em;
+.cease-logo-ico {font-size:1.7em;filter:drop-shadow(0 2px 2px #00cfff10);}
+.cease-logo-txt {font-size:1em;font-weight:760;letter-spacing:-0.7px; color:inherit;}
+.cease-nav-links {
+  display:flex;align-items:center;gap:2em;
 }
-.talkbuddy-link {
-  text-decoration: none;
-  font-size: 1.09rem;
-  font-weight: 500;
-  padding: 0.45em 0px;
-  color: inherit;
+.cease-nav-link {
+  text-decoration:none;
+  font-size:1.10rem;
+  font-weight:500;
+  padding:0.45em 0.3em;
+  color:inherit;
   position: relative;
-  transition: color 0.19s;
+  transition: color 0.18s;
 }
-.talkbuddy-link:after {
-  content: "";
-  display: block;
-  height: 2px;
-  width: 0%;
-  background: #4F8CFF;
-  transition: width 0.19s cubic-bezier(.4,0,.2,1), box-shadow 0.23s;
-  border-radius: 22px;
-  margin-top: 2px;
+.cease-nav-link:after {
+  content:"";
+  display:block;
+  height:2px;
+  width:0%;
+  background:#4F8CFF;
+  border-radius:18px;
+  margin-top:2.3px;
+  transition: width 0.17s, box-shadow 0.19s;
 }
-.talkbuddy-link:hover, .talkbuddy-link:focus {
-  color: #4F8CFF;
-  outline: none;
+.cease-nav-link:hover, .cease-nav-link:focus {
+  color:#13d9ff;
+  outline:none;
 }
-.talkbuddy-link:hover:after, .talkbuddy-link:focus:after {
-  width: 47%;
-  box-shadow: 0 2px 8px #4f8cff44;
+.cease-nav-link:hover:after, .cease-nav-link:focus:after {
+  width:62%;
+  box-shadow:0 2px 9px #60edff41;
 }
-.talkbuddy-toggler {
-  background: none;
-  border: none;
-  outline: none;
-  margin-left: 1.2em;
-  cursor: pointer;
-  border-radius: 50%;
-  padding: 7px;
-  min-width: 36px;
-  min-height: 36px;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.14s;
+.cease-theme-toggle {
+  background:none;
+  border:none;
+  outline:none;
+  margin-left:1.5em;
+  cursor:pointer;
+  border-radius:50%;
+  padding:8px;
+  min-width:34px; min-height:34px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.17s;
 }
-.talkbuddy-toggler:active, .talkbuddy-toggler:focus {
-  outline: 1.5px dotted #7ad6ff55;
-  background: #008cff11;
+.cease-theme-toggle:focus,.cease-theme-toggle:active {
+  outline:1.5px dotted #12defe88;
+  background:#47cfff15;
 }
-.tb-theme-ico {
-  display: inline-block; line-height: 0;
-  filter: drop-shadow(0 1px 7px #2d495888);
+.cease-theme-ico{display:inline-block;font-size:1.38em;line-height:0;filter:drop-shadow(0 1px 7px #18e3e388);}
+@media (max-width:720px){
+  .cease-navbar-inner{padding:0 0.4em;}
+  .cease-nav-links{gap:1em;}
+  .cease-logo-txt{font-size:0.93em;}
 }
-
-
-/* Responsive design */
-@media (max-width: 720px) {
-  .talkbuddy-navbar-inner { padding: 0 0.5em; }
-  .talkbuddy-nav-links { gap: 1em; }
-  .talkbuddy-logo-text { font-size: 1em; }
+@media (max-width:494px){
+  .cease-navbar-inner{padding:0 0.1em;}
+  .cease-logo-txt{display:none;}
+  .cease-nav-links{gap:0.53em;}
 }
-@media (max-width: 494px) {
-  .talkbuddy-navbar-inner { padding: 0 0.1em; }
-  .talkbuddy-logo-text { display: none; } /* Symbol only on mobile */
-  .talkbuddy-nav-links { gap: 0.67em; }
-}
-
-/* Add global theme classes for dark/light mode color variables */
-body.talkbuddy-dark {
-  --tb-bg: linear-gradient(90deg, #000, #1A1A1A 50%, #333 100%);
-  --tb-fg: #fff;
-  --tb-shadow: 0 2px 22px 0 #0a0e20b0, 0 1.5px 0 #19162b;
-}
-body.talkbuddy-light {
-  --tb-bg: rgb(208, 204, 199);
-  --tb-fg: #181622;
-  --tb-shadow: 0 2px 10px 0 #b9b2a333;
-}
-
-/* Ensure page content below nav */
-body { padding-top: 65px; transition: background 0.22s, color 0.22s;}
+body.dark{ --nav-fg:#fff;}
+body.light{ --nav-fg:#183a53;}
+body{ transition:background 0.23s, color 0.21s;}
 `;
 
 export default NavBar;
