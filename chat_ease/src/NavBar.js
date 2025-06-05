@@ -80,34 +80,9 @@ function NavBar() {
             tabIndex={0}
             type="button"
           >
-            {darkMode ? (
-              <span className="tb-theme-ico" role="img" aria-label="Light Mode">
-                {/* Sun icon */}
-                <svg width="22" height="22" viewBox="0 0 22 22" style={{verticalAlign:"middle"}} fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="11" cy="11" r="5" fill="#f2c94c" />
-                  <g stroke="#f2c94c" strokeWidth="1.5">
-                    <line x1="11" y1="1.5" x2="11" y2="4"/>
-                    <line x1="11" y1="18" x2="11" y2="20.5"/>
-                    <line x1="1.5" y1="11" x2="4" y2="11"/>
-                    <line x1="18" y1="11" x2="20.5" y2="11"/>
-                    <line x1="4.52" y1="4.52" x2="6.25" y2="6.25"/>
-                    <line x1="15.75" y1="15.75" x2="17.48" y2="17.48"/>
-                    <line x1="15.75" y1="6.25" x2="17.48" y2="4.52"/>
-                    <line x1="4.52" y1="17.48" x2="6.25" y2="15.75"/>
-                  </g>
-                </svg>
-              </span>
-            ) : (
-              <span className="tb-theme-ico" role="img" aria-label="Dark Mode">
-                {/* Moon icon */}
-                <svg width="22" height="22" viewBox="0 0 22 22" style={{verticalAlign:"middle"}} fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M17.63,14.82A7.43,7.43,0,0,1,7.12,4.37,1,1,0,0,0,6.12,5,9,9,0,1,0,17,15.87a1,1,0,0,0,.63-1.05Z"
-                    fill="#fff"
-                  />
-                </svg>
-              </span>
-            )}
+            <span className="tb-theme-ico" role="img" aria-label={darkMode ? "Light mode (show sun)" : "Dark mode (show moon)"}>
+              {darkMode ? "🌙" : "☀️"}
+            </span>
           </button>
         </div>
       </nav>
